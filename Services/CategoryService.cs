@@ -21,14 +21,37 @@ namespace API.Simple.Services
             _categoryCollection = database.GetCollection<Category>(settings.CategoryCollectionName);
         }
 
-        internal async Task<ActionResult<List<Category>>> Find()
+        public async Task<ActionResult<List<Category>>> Get()
         {
-            return await _categoryCollection.Find(new BsonDocument()).ToListAsync();
+            return await _categoryCollection.Find(c => true).ToListAsync();
         }
 
-        internal void Create(Category model)
+        public Category Get(string id)
         {
-            _categoryCollection.InsertOne(model);
+            return _categoryCollection
+                .Find(c => c.Id.ToString() == id)
+                .FirstOrDefault();
+        }
+
+        public Category Create(Category category)
+        {
+            _categoryCollection.InsertOne(category);
+            return category;
+        }
+
+        public void Update(string id, Category category)
+        {
+            _categoryCollection.ReplaceOne(c => c.Id.ToString() == id, category);
+        }
+
+        public void Remove(Category category)
+        {
+            _categoryCollection.DeleteOne(c => c.Id.ToString() == category.Id.ToString());
+        }
+
+        public void Remove(string id)
+        {
+            _categoryCollection.DeleteOne(c => c.Id.ToString() == id);
         }
     }
 }

@@ -25,12 +25,12 @@ namespace API.Simple.Controllers
         [Route("")]
         public async Task<ActionResult<List<Category>>> Get()
         {
-            return await _service.Find();            
+            return await _service.Get();            
         }
 
         [HttpPost]
         [Route("")]
-        public async Task<ActionResult<Category>> Post([FromBody]Category model)
+        public ActionResult<Category> Post([FromBody]Category model)
         {
             if (ModelState.IsValid)
             {
@@ -39,6 +39,32 @@ namespace API.Simple.Controllers
             }
             else
                 return BadRequest(ModelState);            
-        }        
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Update(string id, Category categoryIn)
+        {
+            var category = _service.Get(id);
+
+            if (category == null)            
+                return NotFound();            
+
+            _service.Update(id, categoryIn);
+
+            return NoContent();
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(string id)
+        {
+            var category = _service.Get(id);
+
+            if (category == null)
+                return NotFound();
+
+            _service.Remove(id);
+
+            return NoContent();
+        }
     }
 }

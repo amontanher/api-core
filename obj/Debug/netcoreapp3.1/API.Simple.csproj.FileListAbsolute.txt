@@ -27,3 +27,4 @@ C:\Users\Ale\Desktop\API\API.Simple\obj\Debug\netcoreapp3.1\API.Simple.MvcApplic
 C:\Users\Ale\Desktop\API\API.Simple\obj\Debug\netcoreapp3.1\API.Simple.csproj.CopyComplete
 C:\Users\Ale\Desktop\API\API.Simple\obj\Debug\netcoreapp3.1\API.Simple.dll
 C:\Users\Ale\Desktop\API\API.Simple\obj\Debug\netcoreapp3.1\API.Simple.pdb
+C:\Users\Ale\Desktop\API\API.Simple\obj\Debug\netcoreapp3.1\API.Simple.csprojAssemblyReference.cache
