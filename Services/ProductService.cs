@@ -21,19 +21,44 @@ namespace API.Simple.Services
             _productCollection = database.GetCollection<Product>(settings.ProductCollectionName);
         }
 
-        public async Task<ActionResult<List<Product>>> Find()
+        public async Task<ActionResult<List<Product>>> Get()
         {
-            return await _productCollection.Find(new BsonDocument()).ToListAsync();
+            return await _productCollection.Find(c => true).ToListAsync();
         }
 
-        public Product GetById(int id)
+        public Product Get(int id)
         {
-            return _productCollection.Find(p => p.Id == id).FirstOrDefault();
+            return _productCollection
+                .Find(c => c.Id == id)
+                .FirstOrDefault();
         }
 
-        public void Create(Product model)
+        public Product Create(Product Product)
         {
-            _productCollection.InsertOne(model);
+            try
+            {
+                _productCollection.InsertOne(Product);
+                return Product;
+            }
+            catch (MongoWriteException ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void Update(int id, Product Product)
+        {
+            _productCollection.ReplaceOne(c => c.Id == id, Product);
+        }
+
+        public void Remove(Product Product)
+        {
+            _productCollection.DeleteOne(c => c.Id == Product.Id);
+        }
+
+        public void Remove(int id)
+        {
+            _productCollection.DeleteOne(c => c.Id == id);
         }
     }
 }

@@ -18,17 +18,47 @@ namespace API.Simple.Services
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
-            _categoryCollection = database.GetCollection<Category>(settings.CategoryCollectionName);
+            _categoryCollection = database.GetCollection<Category>(settings.CategoryCollectionName);            
         }
 
-        internal async Task<ActionResult<List<Category>>> Find()
+        public async Task<ActionResult<List<Category>>> Get()
         {
-            return await _categoryCollection.Find(new BsonDocument()).ToListAsync();
+            return await _categoryCollection.Find(c => true).ToListAsync();
         }
 
-        internal void Create(Category model)
+        public Category Get(int id)
         {
-            _categoryCollection.InsertOne(model);
+            return _categoryCollection
+                .Find(c => c.Id == id)
+                .FirstOrDefault();
+        }
+
+        public Category Create(Category category)
+        {
+            try
+            {
+                _categoryCollection.InsertOne(category);
+                return category;
+            }
+            catch (MongoWriteException ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void Update(int id, Category category)
+        {
+            _categoryCollection.ReplaceOne(c => c.Id == id, category);
+        }
+
+        public void Remove(Category category)
+        {
+            _categoryCollection.DeleteOne(c => c.Id == category.Id);
+        }
+
+        public void Remove(int id)
+        {
+            _categoryCollection.DeleteOne(c => c.Id == id);
         }
     }
 }
