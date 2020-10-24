@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Serilog;
 
 namespace API.Simple
 {
@@ -30,7 +32,7 @@ namespace API.Simple
             services.AddSingleton<CategoryService>();
             services.AddSingleton<ProductService>();            
 
-            services.AddControllers();
+            services.AddControllers();                        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
