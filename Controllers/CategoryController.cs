@@ -2,6 +2,7 @@
 using API.Simple.Model;
 using API.Simple.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
@@ -16,16 +17,35 @@ namespace API.Simple.Controllers
     {
         private readonly CategoryService _service;
 
-        public CategoryController(CategoryService service)
+        private readonly ILogger<CategoryController> _logger;
+
+        public CategoryController(CategoryService service,
+                                  ILogger<CategoryController> logger)
         {
             _service = service;
+            _logger = logger;
         }
 
         [HttpGet]
         [Route("")]
         public async Task<ActionResult<List<Category>>> Get()
         {
-            return await _service.Get();            
+            try
+            {
+                var rng = new Random();
+
+                if (rng.Next(0, 5) < 2)
+                {
+                    throw new Exception("Ooops what happened?");
+                }
+                _logger.LogInformation("OK DONE!");                
+                return Ok(await _service.Get());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Something bag happenned");
+                return new StatusCodeResult(400);
+            }
         }
 
         [HttpPost]
