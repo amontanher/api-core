@@ -4,6 +4,12 @@
 ###################
 # compiled source #
 ###################
+*.suo
+*.user
+_ReSharper.*
+bin
+obj
+packages
 *.com
 *.class
 *.dll
