@@ -23,9 +23,7 @@ namespace API.Simple
                  .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(
                      node: new Uri(context.Configuration["ElasticConfiguration:Uri"]))
                  {
-                     IndexFormat = $"{context.Configuration["ApplicationName"]}-logs-" +
-                     $"{context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".", "-")}-" +
-                     $"{DateTime.UtcNow:yyyy:MM}",
+                     IndexFormat = "logstash",
                      AutoRegisterTemplate = true,
                      NumberOfShards = 2,
                      NumberOfReplicas = 1

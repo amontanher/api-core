@@ -38,7 +38,8 @@ namespace API.Simple.Controllers
                 {
                     throw new Exception("Ooops what happened?");
                 }
-                _logger.LogInformation("OK DONE!");                
+                _logger.LogInformation("OK DONE!");
+                _logger.LogDebug("DEBUGANDO");
                 return Ok(await _service.Get());
             }
             catch (Exception ex)
