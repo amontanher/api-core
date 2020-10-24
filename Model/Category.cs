@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.Simple.Model
 {
     public class Category
     {
+        [BsonId]
         public int Id { get; set; }
 
         [Required(ErrorMessage ="Este campo é obrigatório")]

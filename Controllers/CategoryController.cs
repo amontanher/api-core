@@ -42,7 +42,7 @@ namespace API.Simple.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(string id, Category categoryIn)
+        public IActionResult Update(int id, Category categoryIn)
         {
             var category = _service.Get(id);
 
@@ -54,8 +54,8 @@ namespace API.Simple.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
-        public IActionResult Delete(string id)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
         {
             var category = _service.Get(id);
 

@@ -18,7 +18,7 @@ namespace API.Simple.Services
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
-            _categoryCollection = database.GetCollection<Category>(settings.CategoryCollectionName);
+            _categoryCollection = database.GetCollection<Category>(settings.CategoryCollectionName);            
         }
 
         public async Task<ActionResult<List<Category>>> Get()
@@ -26,32 +26,39 @@ namespace API.Simple.Services
             return await _categoryCollection.Find(c => true).ToListAsync();
         }
 
-        public Category Get(string id)
+        public Category Get(int id)
         {
             return _categoryCollection
-                .Find(c => c.Id.ToString() == id)
+                .Find(c => c.Id == id)
                 .FirstOrDefault();
         }
 
         public Category Create(Category category)
         {
-            _categoryCollection.InsertOne(category);
-            return category;
+            try
+            {
+                _categoryCollection.InsertOne(category);
+                return category;
+            }
+            catch (MongoWriteException ex)
+            {
+                throw ex;
+            }
         }
 
-        public void Update(string id, Category category)
+        public void Update(int id, Category category)
         {
-            _categoryCollection.ReplaceOne(c => c.Id.ToString() == id, category);
+            _categoryCollection.ReplaceOne(c => c.Id == id, category);
         }
 
         public void Remove(Category category)
         {
-            _categoryCollection.DeleteOne(c => c.Id.ToString() == category.Id.ToString());
+            _categoryCollection.DeleteOne(c => c.Id == category.Id);
         }
 
-        public void Remove(string id)
+        public void Remove(int id)
         {
-            _categoryCollection.DeleteOne(c => c.Id.ToString() == id);
+            _categoryCollection.DeleteOne(c => c.Id == id);
         }
     }
 }
